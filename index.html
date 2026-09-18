@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RPG de Texto</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="game">
+
+    <!-- CABEÇALHO -->
+
+    <header class="header">
+
+        <div class="title">
+            ⚔️ Crônicas do Abismo
+        </div>
+
+        <div class="location">
+            🌲 Floresta Sombria
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+        <!-- STATUS -->
+
+        <aside class="sidebar">
+
+            <div class="character">
+
+                <div class="avatar">
+                    🧙
+                </div>
+
+                <div>
+                    <h2>Raphael</h2>
+                    <div class="level">
+                        Nível 3
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- HP -->
+
+            <div class="stat">
+
+                <div class="stat-name">
+                    <span>❤️ Vida</span>
+                    <span>80 / 100</span>
+                </div>
+
+                <div class="bar">
+                    <div class="bar-fill hp"></div>
+                </div>
+
+            </div>
+
+
+            <!-- MANA -->
+
+            <div class="stat">
+
+                <div class="stat-name">
+                    <span>🔷 Mana</span>
+                    <span>60 / 100</span>
+                </div>
+
+                <div class="bar">
+                    <div class="bar-fill mana"></div>
+                </div>
+
+            </div>
+
+
+            <!-- XP -->
+
+            <div class="stat">
+
+                <div class="stat-name">
+                    <span>⭐ Experiência</span>
+                    <span>350 / 1000</span>
+                </div>
+
+                <div class="bar">
+                    <div class="bar-fill xp"></div>
+                </div>
+
+            </div>
+
+
+            <!-- INVENTÁRIO -->
+
+            <div class="inventory">
+
+                <h3>🎒 Inventário</h3>
+
+                <div class="items">
+
+                    <div class="item">⚔️</div>
+                    <div class="item">🧪</div>
+                    <div class="item">🪙</div>
+                    <div class="item">🔑</div>
+                    <div class="item">📜</div>
+                    <div class="item">💎</div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- HISTÓRIA -->
+
+        <main class="story">
+
+            <h1 class="story-title">
+                O Caminho Perdido
+            </h1>
+
+
+            <div class="narrative">
+
+                <p id="txt">
+                    A floresta estava silenciosa.
+                    Silenciosa demais.<br>
+
+                    Raphael caminhava entre as árvores,
+                    segurando firmemente sua espada.<br>
+    
+                    Um vento frio passou por seu rosto.
+                    Então...
+                </p>
+
+                <p class="important">
+                    CRACK!
+                </p>
+
+                <p>
+                    Um galho havia sido quebrado atrás dele.
+                </p>
+
+                <p class="dialogue">
+                    — Quem está aí?
+                </p>
+
+                <p>
+                    Nenhuma resposta.
+                </p>
+
+                <p>
+                    Raphael observa os três caminhos
+                    diante dele.
+                </p>
+
+            </div>
+
+
+            <!-- ESCOLHAS -->
+
+            <div class="choices">
+
+                <button class="choice" onclick="escolher(1)">
+                    🌲 Seguir pela floresta
+                </button>
+
+                <button class="choice" onclick="escolher(2)">
+                    🏔️ Subir a montanha
+                </button>
+
+                <button class="choice" onclick="escolher(3)">
+                    🔥 Investigar a fumaça
+                </button>
+
+                <button class="choice" onclick="escolher(4)">
+                    ↩️ Voltar pelo caminho
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="scripts.js">
+</script>
+
+</body>
+</html>
+
