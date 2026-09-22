@@ -61,6 +61,10 @@ let doubleShot = false;
 player.maxHp = 3;
 
 // ==================================================
+// BOSS
+// ==================================================
+
+// ==================================================
 // TIROS
 // ==================================================
 
@@ -113,10 +117,10 @@ const cards = [
 
     {
         name: "Canhão Pesado",
-        description: "+2 de dano por tiro",
+        description: "+1 de dano por tiro",
 
         apply: function() {
-            bulletDamage += 2;
+            bulletDamage ++;
         }
     },
 
@@ -382,9 +386,16 @@ function updateEnemies() {
 
 
     // Criar novos inimigos
+    
+    if (enemyDelay >= 50) {
+        enemyDelay -= Math.floor(tempo / 50);
+    }
 
+    if (score <= 1000){
     enemyTimer--;
-
+    } else {
+        gamePaused = true;
+    }
 
     if (enemyTimer <= 0) {
 
