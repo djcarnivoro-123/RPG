@@ -64,6 +64,22 @@ player.maxHp = 3;
 // BOSS
 // ==================================================
 
+const boss = {
+
+    x: 200,
+
+    y: canvas.height / 2,
+
+    width: 200,
+
+    height: 120,
+
+    speed: 5,
+
+    hp: 3,
+
+}
+
 // ==================================================
 // TIROS
 // ==================================================
@@ -391,10 +407,10 @@ function updateEnemies() {
         enemyDelay -= Math.floor(tempo / 50);
     }
 
-    if (score <= 1000){
+    if (score <= 10){
     enemyTimer--;
     } else {
-        gamePaused = true;
+        drawBoss();
     }
 
     if (enemyTimer <= 0) {
@@ -704,6 +720,53 @@ function drawPlayer() {
 
 }
 
+// ==================================================
+// DESENHAR BOSS
+// ==================================================
+
+function drawBoss() {
+
+    ctx.fillStyle = "orange";
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+
+        boss.x,
+
+        boss.y
+
+    );
+
+
+    ctx.lineTo(
+
+        boss.x,
+
+        boss.y + boss.height
+
+    );
+
+
+    ctx.lineTo(
+
+        boss.x + boss.width,
+
+        boss.y + boss.height / 2
+
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.fill();
+
+}
+
+
 
 // ==================================================
 // FUNDO
@@ -843,6 +906,7 @@ function gameLoop() {
     if (player.level * 100 == score) {
         openCards();
         player.level++;
+        
     }
 
     // Próximo frame
