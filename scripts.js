@@ -639,6 +639,9 @@ function checkBossCollisions() {
 
             bullets.splice(i, 1);
 
+            if (boss.hp <= 0) {
+                
+            }
 
             // -------------------------
             // BOSS DERROTADO
@@ -774,7 +777,7 @@ function drawPlayer() {
 
 function spawnBoss() {
 
-    if (bossActive) {
+    if (bossActive || player.level < bossSpawnLevel) {
         return;
     }
 
@@ -1147,8 +1150,6 @@ function gameLoop() {
             player.level >= bossSpawnLevel &&
             !bossActive
         ) {
-            
-            bossSpawnLevel = 3 * bossNumber;
             spawnBoss();
         
         }
