@@ -74,6 +74,8 @@ let bossSpawnLevel = 3 * bossNumber;
 
 let bossMaxHp = 100 * bossNumber;
 
+let bossImunit = false;
+
 // ==================================================
 // TIROS
 // ==================================================
@@ -621,6 +623,12 @@ function checkBossCollisions() {
         return;
     }
 
+    if (bossImunit) {
+        setInterval(() => {
+            bossImunit = false;
+        }, 500)
+    }
+
 
     for (
         let i = bullets.length - 1;
@@ -639,8 +647,8 @@ function checkBossCollisions() {
 
             bullets.splice(i, 1);
 
-            if (boss.hp <= 0) {
-                
+            if (boss.hp <= bulletDamage) {
+                boss.hp = 0;
             }
 
             // -------------------------
@@ -658,6 +666,8 @@ function checkBossCollisions() {
                 score += 100;
 
                 bossNumber ++;
+
+                bossMaxHp = 100 * bossNumber;
 
             }
 
@@ -826,10 +836,13 @@ function updateBoss() {
 
         boss.x -= boss.speed;
 
+        bossImunit = true;
+
         return;
 
     }
 
+    bossImunit = false;
 
     // -------------------------
     // MOVIMENTO VERTICAL
@@ -1150,8 +1163,8 @@ function gameLoop() {
             player.level >= bossSpawnLevel &&
             !bossActive
         ) {
+            bossSpawnLevel = 3 * bossNumber;
             spawnBoss();
-        
         }
     }
     // Próximo frame
