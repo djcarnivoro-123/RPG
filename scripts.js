@@ -70,9 +70,9 @@ let bossActive = false;
 
 let bossNumber = 1;
 
-let bossSpawnLevel = 3 * bossNumber;
+let bossSpawnLevel = 5 * bossNumber;
 
-let bossMaxHp = 100 * bossNumber;
+let bossMaxHp = 200 * bossNumber;
 
 let bossImunit = false;
 
