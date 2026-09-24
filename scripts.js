@@ -64,21 +64,15 @@ player.maxHp = 3;
 // BOSS
 // ==================================================
 
-const boss = {
+let boss = null;
 
-    x: 200,
+let bossActive = false;
 
-    y: canvas.height / 2,
+let bossNumber = 1;
 
-    width: 200,
+let bossSpawnLevel = 3 * bossNumber;
 
-    height: 120,
-
-    speed: 5,
-
-    hp: 3,
-
-}
+let bossMaxHp = 100 * bossNumber;
 
 // ==================================================
 // TIROS
@@ -113,11 +107,12 @@ let shootDelay = 20;
 // TIMER
 // ==================================================
 
-let tempo= 0;
+let tempo = 0;
+
 
 const timer = setInterval(() => {
   
-  tempo++; 
+  tempo++;
 
   if (tempoRestante < 0) {
     clearInterval(timer);
@@ -407,12 +402,12 @@ function updateEnemies() {
         enemyDelay -= Math.floor(tempo / 50);
     }
 
-    if (score <= 10){
-    enemyTimer--;
+    if (bossActive) {
+        
     } else {
-        drawBoss();
+        enemyTimer --;
     }
-
+    
     if (enemyTimer <= 0) {
 
         spawnEnemy();
@@ -616,6 +611,59 @@ function checkPlayerCollisions() {
 
 }
 
+// ==================================================
+// COLISÃO TIRO x BOSS
+// ==================================================
+
+function checkBossCollisions() {
+
+    if (!bossActive || boss === null) {
+        return;
+    }
+
+
+    for (
+        let i = bullets.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (
+            collision(
+                bullets[i],
+                boss
+            )
+        ) {
+
+            boss.hp -= bulletDamage;
+
+            bullets.splice(i, 1);
+
+
+            // -------------------------
+            // BOSS DERROTADO
+            // -------------------------
+
+            if (boss.hp <= 0) {
+
+                boss.hp = 0;
+
+                bossActive = false;
+
+                boss = null;
+
+                score += 100;
+
+                bossNumber ++;
+
+            }
+
+        }
+
+    }
+
+}
+
 
 // ==================================================
 // ATUALIZAR PLAYER
@@ -721,52 +769,234 @@ function drawPlayer() {
 }
 
 // ==================================================
+// CRIAR BOSS
+// ==================================================
+
+function spawnBoss() {
+
+    if (bossActive) {
+        return;
+    }
+
+    boss = {
+
+        x: canvas.width + 100,
+
+        y: canvas.height / 2 - 60,
+
+        width: 100,
+
+        height: 120,
+
+        speed: 2,
+
+        hp: bossMaxHp,
+
+        maxHp: bossMaxHp,
+
+        direction: 1,
+
+        targetX: canvas.width - 180
+
+    };
+
+    bossActive = true;
+
+}
+
+// ==================================================
+// ATUALIZAR BOSS
+// ==================================================
+
+function updateBoss() {
+
+    if (!bossActive || boss === null) {
+        return;
+    }
+
+
+    // -------------------------
+    // ENTRADA DO BOSS
+    // -------------------------
+
+    if (boss.x > boss.targetX) {
+
+        boss.x -= boss.speed;
+
+        return;
+
+    }
+
+
+    // -------------------------
+    // MOVIMENTO VERTICAL
+    // -------------------------
+
+    boss.y += boss.speed * boss.direction;
+
+
+    // Limite superior
+
+    if (boss.y <= 50) {
+
+        boss.y = 50;
+
+        boss.direction = 1;
+
+    }
+
+
+    // Limite inferior
+
+    if (
+        boss.y + boss.height >=
+        canvas.height - 50
+    ) {
+
+        boss.y =
+            canvas.height -
+            boss.height -
+            50;
+
+        boss.direction = -1;
+
+    }
+
+}
+
+// ==================================================
 // DESENHAR BOSS
 // ==================================================
 
 function drawBoss() {
 
-    ctx.fillStyle = "orange";
+    if (!bossActive || boss === null) {
+        return;
+    }
 
 
-    ctx.beginPath();
+    // Corpo
 
+    ctx.fillStyle = "purple";
 
-    ctx.moveTo(
-
-        boss.x,
-
-        boss.y
-
-    );
-
-
-    ctx.lineTo(
+    ctx.fillRect(
 
         boss.x,
 
-        boss.y + boss.height
+        boss.y,
+
+        boss.width,
+
+        boss.height
 
     );
 
 
-    ctx.lineTo(
+    // Parte interna
 
-        boss.x + boss.width,
+    ctx.fillStyle = "black";
 
-        boss.y + boss.height / 2
+    ctx.fillRect(
+
+        boss.x + 15,
+
+        boss.y + 15,
+
+        boss.width - 30,
+
+        boss.height - 30
 
     );
 
 
-    ctx.closePath();
+    // Núcleo
+
+    ctx.fillStyle = "red";
+
+    ctx.fillRect(
+
+        boss.x + 35,
+
+        boss.y + 45,
+
+        30,
+
+        30
+
+    );
 
 
-    ctx.fill();
+    // -------------------------
+    // BARRA DE VIDA
+    // -------------------------
+
+    const barWidth = 250;
+
+    const barHeight = 18;
+
+    const barX =
+        canvas.width / 2 -
+        barWidth / 2;
+
+    const barY = 20;
+
+
+    // Fundo
+
+    ctx.fillStyle = "black";
+
+    ctx.fillRect(
+
+        barX,
+
+        barY,
+
+        barWidth,
+
+        barHeight
+
+    );
+
+
+    // Vida
+
+    ctx.fillStyle = "red";
+
+    ctx.fillRect(
+
+        barX,
+
+        barY,
+
+        barWidth *
+        (boss.hp / boss.maxHp),
+
+        barHeight
+
+    );
+
+
+    // Texto
+
+    ctx.fillStyle = "white";
+
+    ctx.font = "16px Arial";
+
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+
+        "BOSS",
+
+        canvas.width / 2,
+
+        barY + 14
+
+    );
+
+    ctx.textAlign = "left";
 
 }
-
-
 
 // ==================================================
 // FUNDO
@@ -864,53 +1094,67 @@ function drawHUD() {
 function gameLoop() {
 
     if (!gamePaused) {
-    // -------------------------
-    // ATUALIZAÇÃO
-    // -------------------------
-
-    updatePlayer();
-    
-    updateBullets();
-
-    updateEnemies();
-
-
-    // -------------------------
-    // COLISÕES
-    // -------------------------
-
-    checkBulletCollisions();
-
-    checkPlayerCollisions();
-
-
-    // -------------------------
-    // DESENHO
-    // -------------------------
-
-    drawBackground();
-
-    drawPlayer();
-
-    drawBullets();
-
-    drawEnemies();
-
-    drawHUD();
-
-
-    // -------------------------
-    // Subir de Nivel
-    // -------------------------
-
-    if (player.level * 100 == score) {
-        openCards();
-        player.level++;
         
-    }
+        // -------------------------
+        // ATUALIZAÇÃO
+        // -------------------------
 
-    // Próximo frame
+        updatePlayer();
+        
+        updateBullets();
+
+        updateEnemies();
+
+        updateBoss();
+
+        // -------------------------
+        // COLISÕES
+        // -------------------------
+
+        checkBulletCollisions();
+
+        checkPlayerCollisions();
+
+        checkBossCollisions();
+
+        // -------------------------
+        // DESENHO
+        // -------------------------
+
+        drawBackground();
+
+        drawPlayer();
+
+        drawBullets();
+
+        drawEnemies();
+
+        drawHUD();
+
+        drawBoss();
+
+        // -------------------------
+        // Subir de Nivel
+        // -------------------------
+
+        if (player.level * 100 <= score) {
+            openCards();
+            player.level++;
+            
+        }
+
+        if (
+            player.level >= bossSpawnLevel &&
+            !bossActive
+        ) {
+            
+            bossSpawnLevel = 3 * bossNumber;
+            spawnBoss();
+        
+        }
     }
+    // Próximo frame
+    
     requestAnimationFrame(gameLoop);
 
     
